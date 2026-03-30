@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, type Variants } from 'framer-motion'
 import Link from 'next/link'
 
 const features = [
@@ -16,10 +16,10 @@ const steps = [
   { n: '03', title: 'Toma decisiones', desc: 'Los reportes te dicen dónde ahorrar y cómo avanzar.' },
 ]
 
-const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }
-const item = {
+const stagger: Variants = { hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }
+const item: Variants = {
   hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+  visible: { opacity: 1, y: 0 },
 }
 
 export default function LandingPage() {

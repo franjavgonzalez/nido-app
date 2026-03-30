@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, type Variants } from 'framer-motion'
 import toast from 'react-hot-toast'
 import { createClient } from '@/lib/supabase/client'
 
@@ -23,13 +23,13 @@ export default function LoginPage() {
     }
   }
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: {},
     visible: { transition: { staggerChildren: 0.12 } },
   }
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } },
+    visible: { opacity: 1, y: 0 },
   }
 
   return (

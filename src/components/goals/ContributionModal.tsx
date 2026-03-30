@@ -11,7 +11,7 @@ import Button from '@/components/ui/Button'
 import type { Goal } from '@/types'
 
 const schema = z.object({
-  amount: z.coerce.number().positive('Monto debe ser mayor a 0'),
+  amount: z.number({ error: 'Ingresa un monto válido' }).positive('Monto debe ser mayor a 0'),
   note: z.string().optional(),
   date: z.string().min(1),
 })
@@ -76,7 +76,7 @@ export default function ContributionModal({ open, onOpenChange, goal, onSuccess 
           placeholder="0"
           className="text-lg h-12"
           error={errors.amount?.message}
-          {...register('amount')}
+          {...register('amount', { valueAsNumber: true })}
         />
         <Input label="Nota (opcional)" placeholder="Ej: ahorro mensual" {...register('note')} />
         <Input label="Fecha" type="date" error={errors.date?.message} {...register('date')} />

@@ -24,7 +24,7 @@ export default async function DashboardPage() {
 
   if (!member) redirect('/onboarding')
 
-  const family = member.families as { id: string; name: string; primary_currency: string } | null
+  const family = (Array.isArray(member.families) ? member.families[0] : member.families) as { id: string; name: string; primary_currency: string } | null
   if (!family) redirect('/onboarding')
 
   const familyId = family.id
@@ -76,7 +76,8 @@ export default async function DashboardPage() {
 
   const categoryMap = new Map<string, { name: string; icon: string; amount: number }>()
   for (const tx of categoryTxs ?? []) {
-    const cat = tx.categories as { name: string; icon: string } | null
+    const catRaw = tx.categories
+    const cat = (Array.isArray(catRaw) ? catRaw[0] : catRaw) as { name: string; icon: string } | null
     const key = cat?.name ?? 'Sin categoría'
     const existing = categoryMap.get(key) ?? { name: key, icon: cat?.icon ?? '📦', amount: 0 }
     existing.amount += Number(tx.amount)

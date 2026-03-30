@@ -8,7 +8,7 @@ interface ReportCategory {
   icon: string
   budget: number
   spent: number
-  currency: CurrencyCode
+  currency?: CurrencyCode
 }
 
 interface ReportData {
@@ -75,9 +75,9 @@ export function generateFamilyReport(data: ReportData): void {
       const pct = cat.budget > 0 ? Math.round((cat.spent / cat.budget) * 100) : 0
       return [
         `${cat.icon} ${cat.name}`,
-        formatCurrency(cat.budget, cat.currency),
-        formatCurrency(cat.spent, cat.currency),
-        formatCurrency(diff, cat.currency),
+        formatCurrency(cat.budget, cat.currency ?? data.currency),
+        formatCurrency(cat.spent, cat.currency ?? data.currency),
+        formatCurrency(diff, cat.currency ?? data.currency),
         `${pct}%`,
       ]
     }),
@@ -96,12 +96,13 @@ export function generateFamilyReport(data: ReportData): void {
       fillColor: [30, 34, 48],
     },
     columnStyles: {
-      3: {
-        cellCallback: (cell, opts) => {
-          const val = parseFloat(String(cell.raw).replace(/[^0-9.-]/g, ''))
-          cell.styles.textColor = val >= 0 ? [74, 222, 128] : [248, 113, 113]
-        },
-      },
+      3: { cellWidth: 'auto' },
+    },
+    didParseCell: (data) => {
+      if (data.column.index === 3 && data.section === 'body') {
+        const val = parseFloat(String(data.cell.raw).replace(/[^0-9.-]/g, ''))
+        data.cell.styles.textColor = val >= 0 ? [74, 222, 128] as [number, number, number] : [248, 113, 113] as [number, number, number]
+      }
     },
     margin: { left: 14, right: 14 },
     tableLineColor: [42, 48, 69],

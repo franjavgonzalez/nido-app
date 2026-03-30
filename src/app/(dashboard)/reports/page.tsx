@@ -66,12 +66,16 @@ export default function ReportsPage() {
       }
     }
 
-    const cats: CategoryReport[] = (buds ?? []).map(b => ({
-      name: (b.categories as { name: string; icon: string } | null)?.name ?? 'Categoría',
-      icon: (b.categories as { name: string; icon: string } | null)?.icon ?? '📦',
-      budget: b.amount,
-      spent: spentMap[b.category_id] ?? 0,
-    }))
+    const cats: CategoryReport[] = (buds ?? []).map(b => {
+      const catRaw = b.categories
+      const cat = (Array.isArray(catRaw) ? catRaw[0] : catRaw) as { name: string; icon: string } | null
+      return {
+        name: cat?.name ?? 'Categoría',
+        icon: cat?.icon ?? '📦',
+        budget: b.amount,
+        spent: spentMap[b.category_id] ?? 0,
+      }
+    })
     setCategories(cats)
     setLoading(false)
   }, [familyId, currentMonth, currentYear, supabase])

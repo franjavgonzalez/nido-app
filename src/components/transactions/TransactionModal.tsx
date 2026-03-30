@@ -15,7 +15,7 @@ import type { Category, CurrencyCode, FamilyMember, TransactionType } from '@/ty
 
 const schema = z.object({
   type: z.enum(['income', 'expense', 'savings', 'investment', 'transfer']),
-  amount: z.coerce.number().positive('El monto debe ser mayor a 0'),
+  amount: z.number({ error: 'Ingresa un monto válido' }).positive('El monto debe ser mayor a 0'),
   currency: z.string().min(1),
   category_id: z.string().optional(),
   description: z.string().optional(),
@@ -140,7 +140,7 @@ export default function TransactionModal({
             placeholder="0"
             className="text-lg h-12 flex-1"
             error={errors.amount?.message}
-            {...register('amount')}
+            {...register('amount', { valueAsNumber: true })}
           />
           <Controller
             name="currency"

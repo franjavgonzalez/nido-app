@@ -98,7 +98,7 @@ export default function ProjectionCalculator({ currency }: ProjectionCalculatorP
             <YAxis hide />
             <Tooltip
               contentStyle={{ background: 'var(--bg-card)', border: '1px solid var(--border-default)', borderRadius: 8, fontSize: 11 }}
-              formatter={(v: number) => formatCurrency(v, currency)}
+              formatter={(v) => formatCurrency(Number(v), currency)}
               labelStyle={{ color: 'var(--text-secondary)' }}
             />
             <Area

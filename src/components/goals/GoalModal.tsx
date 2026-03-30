@@ -17,8 +17,8 @@ const ICONS = ['🏠', '🚗', '🎓', '✈️', '💍', '🏖️', '📱', '�
 const schema = z.object({
   name: z.string().min(1, 'Nombre requerido'),
   description: z.string().optional(),
-  target_amount: z.coerce.number().positive('Monto debe ser mayor a 0'),
-  current_amount: z.coerce.number().min(0).optional(),
+  target_amount: z.number({ error: 'Ingresa un monto válido' }).positive('Monto debe ser mayor a 0'),
+  current_amount: z.number().min(0).optional(),
   currency: z.string().min(1),
   target_date: z.string().optional(),
   icon: z.string().optional(),
@@ -135,13 +135,13 @@ export default function GoalModal({
             type="number"
             placeholder="0"
             error={errors.target_amount?.message}
-            {...register('target_amount')}
+            {...register('target_amount', { valueAsNumber: true })}
           />
           <Input
             label="Monto inicial"
             type="number"
             placeholder="0"
-            {...register('current_amount')}
+            {...register('current_amount', { valueAsNumber: true })}
           />
         </div>
 
