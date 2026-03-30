@@ -1,36 +1,104 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏠 Nido — Gestión financiera familiar
 
-## Getting Started
+Dashboard financiero familiar con transacciones, presupuesto, metas y reportes PDF.
 
-First, run the development server:
+## Stack
+
+| Tecnología | Versión |
+|---|---|
+| Next.js | 16.x (App Router) |
+| TypeScript | 5.x |
+| Tailwind CSS | 4.x |
+| Supabase | 2.x |
+| Framer Motion | 12.x |
+| Recharts | 2.x |
+| Zustand | 5.x |
+| React Hook Form | 7.x |
+| Zod | 3.x |
+| jsPDF | 2.x |
+
+## Instalación local
 
 ```bash
+git clone https://github.com/franjavgonzalez/nido-app
+cd nido-app
+npm install
+cp .env.example .env.local
+# Rellena .env.local con tus valores de Supabase
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Variables de entorno
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://[proyecto].supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+SUPABASE_SERVICE_ROLE_KEY=...
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+NEXT_PUBLIC_APP_NAME=Nido
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Configurar Supabase
 
-## Learn More
+1. Crea un proyecto en https://supabase.com
+2. Copia las credenciales a `.env.local`
+3. Aplica las migraciones:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+supabase login
+supabase link --project-ref [PROJECT_ID]
+supabase db push
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Configurar OAuth Google
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Ver [SETUP_OAUTH.md](./SETUP_OAUTH.md) para instrucciones detalladas.
 
-## Deploy on Vercel
+## Deploy en Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+vercel login
+vercel --yes
+vercel env add NEXT_PUBLIC_SUPABASE_URL production
+vercel env add NEXT_PUBLIC_SUPABASE_ANON_KEY production
+vercel env add SUPABASE_SERVICE_ROLE_KEY production
+vercel env add NEXT_PUBLIC_APP_URL production
+vercel --prod --yes
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Estructura
+
+```
+src/
+├── app/
+│   ├── (auth)/login/        # Página de login
+│   ├── (auth)/callback/     # Callback OAuth
+│   ├── (dashboard)/         # Módulos principales
+│   │   ├── dashboard/       # KPIs + charts
+│   │   ├── transactions/    # Registro de movimientos
+│   │   ├── budget/          # Presupuesto mensual
+│   │   ├── goals/           # Metas de ahorro
+│   │   └── reports/         # Reportes PDF
+│   └── onboarding/          # Setup inicial
+├── components/
+│   ├── ui/                  # Button, Card, Input, Modal...
+│   ├── layout/              # Sidebar, Topbar
+│   ├── dashboard/           # KPICard, Charts
+│   ├── transactions/        # Table, Modal
+│   ├── budget/              # CategoryCard, ConfigModal
+│   ├── goals/               # GoalCard, Modals, Projection
+│   └── reports/             # ReportPreview
+├── lib/
+│   ├── supabase/            # client.ts + server.ts
+│   ├── utils.ts             # Helpers
+│   ├── currencies.ts        # 9 divisas
+│   └── pdf.ts               # Generador PDF
+├── stores/
+│   └── appStore.ts          # Zustand global store
+└── types/
+    └── index.ts             # TypeScript types
+```
+
+## Licencia
+
+MIT
