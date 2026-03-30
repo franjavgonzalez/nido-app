@@ -1,15 +1,17 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { motion, type Variants } from 'framer-motion'
 import toast from 'react-hot-toast'
 import { createClient } from '@/lib/supabase/client'
 
+export const dynamic = 'force-dynamic'
+
 export default function LoginPage() {
   const [loading, setLoading] = useState<'google' | 'apple' | null>(null)
-  const supabase = createClient()
 
-  async function handleOAuth(provider: 'google' | 'apple') {
+  const handleOAuth = useCallback(async (provider: 'google' | 'apple') => {
+    const supabase = createClient()
     setLoading(provider)
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
@@ -21,7 +23,7 @@ export default function LoginPage() {
       toast.error('Error al iniciar sesión. Intenta de nuevo.')
       setLoading(null)
     }
-  }
+  }, [])
 
   const containerVariants: Variants = {
     hidden: {},
