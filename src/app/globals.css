@@ -1,14 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap');
 @import "tailwindcss";
 
+/* ── Design tokens ──────────────────────────────── */
 :root {
   --bg-primary: #0D0F14;
   --bg-secondary: #161921;
   --bg-card: #1E2230;
   --bg-card-hover: #242838;
   --border-default: #2A3045;
+  --border-subtle: #1E2535;
   --gold: #C9A84C;
   --gold-light: #E8C97A;
+  --gold-dim: rgba(201, 168, 76, 0.12);
   --text-primary: #E8EAF2;
   --text-secondary: #9BA3C2;
   --text-muted: #5C6480;
@@ -17,13 +20,13 @@
   --blue: #60A5FA;
   --purple: #A78BFA;
   --orange: #FB923C;
-  --font-display: 'Playfair Display', Georgia, serif;
-  --font-body: 'DM Sans', system-ui, sans-serif;
   --radius-sm: 6px;
   --radius-md: 10px;
-  --radius-lg: 14px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
 }
 
+/* ── Tailwind theme bridge (colors only — NO fonts, avoids circular) ── */
 @theme inline {
   --color-bg-primary: var(--bg-primary);
   --color-bg-secondary: var(--bg-secondary);
@@ -40,13 +43,9 @@
   --color-nido-blue: var(--blue);
   --color-nido-purple: var(--purple);
   --color-nido-orange: var(--orange);
-  --font-display: var(--font-display);
-  --font-body: var(--font-body);
-  --radius-sm: var(--radius-sm);
-  --radius-md: var(--radius-md);
-  --radius-lg: var(--radius-lg);
 }
 
+/* ── Base reset ──────────────────────────────────── */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -60,15 +59,20 @@ html {
 }
 
 body {
-  font-family: var(--font-body);
+  font-family: 'DM Sans', system-ui, sans-serif;
   background-color: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.6;
   min-height: 100vh;
 }
 
+/* ── Typography helpers ─────────────────────────── */
+.font-display {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
 h1, h2, h3 {
-  font-family: var(--font-display);
+  font-family: 'Playfair Display', Georgia, serif;
 }
 
 a {
@@ -76,26 +80,16 @@ a {
   text-decoration: none;
 }
 
-button {
-  font-family: var(--font-body);
+button, input, select, textarea {
+  font-family: 'DM Sans', system-ui, sans-serif;
   cursor: pointer;
 }
 
-input, select, textarea {
-  font-family: var(--font-body);
-}
+/* ── Scrollbar ──────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-secondary); }
+::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--border-default);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
-}
+/* ── Selection ──────────────────────────────────── */
+::selection { background: rgba(201, 168, 76, 0.25); color: var(--text-primary); }
